@@ -2,32 +2,33 @@ name: Daily Price Scraper
 
 on:
   schedule:
-    - cron: '30 16 * * *'  # 10 PM IST = 4:30 PM UTC
-  workflow_dispatch:
+    - cron: '30 16 * * *'  # 10 PM IST (16:30 UTC)
+  workflow_dispatch:       # Allow manual run
 
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: pip install requests beautifulsoup4
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || pip install requests beautifulsoup4 pandas
 
-    - name: Run scraper
-      run: python scraper.py
+      - name: Run scraper
+        run: python scraper.py
 
-    - name: Commit CSV updates
-      run: |
-        git config user.name "github-actions"
-        git config user.email "actions@github.com"
-        git add *.csv
-        git commit -m "Daily update: $(date)"
-        git push
+      - name: Commit and push updates
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add *.csv
+          git commit -m "Update CSV files with latest data" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
