@@ -35,19 +35,31 @@ def scrape_amazon(product):
     try:
         r = requests.get(product["url"], headers=headers, timeout=10)
         soup = BeautifulSoup(r.content, "html.parser")
-        price = soup.select_one("span.a-price-whole")
-        rating = soup.select_one("span.a-icon-alt")
-        availability = soup.select_one("#availability span")
+
+        price_tag = soup.select_one("span.a-offscreen") or soup.find("span", class_="a-price-whole")
+        rating_tag = soup.select_one("span.a-icon-alt")
+        availability_tag = soup.select_one("#availability span")
+
+        # Optional: Log missing fields for debugging
+        if not price_tag or not rating_tag or not availability_tag:
+            print(f"[DEBUG] Missing data for {product['name']}")
 
         return {
             "name": product["name"],
-            "price": price.text.strip() if price else "N/A",
-            "rating": rating.text.strip() if rating else "N/A",
-            "availability": availability.text.strip() if availability else "N/A",
+            "price": price_tag.text.strip() if price_tag else "N/A",
+            "rating": rating_tag.text.strip() if rating_tag else "N/A",
+            "availability": availability_tag.text.strip() if availability_tag else "N/A",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
+
     except Exception as e:
-        return {"name": product["name"], "price": "Error", "rating": "Error", "availability": str(e), "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        return {
+            "name": product["name"],
+            "price": "Error",
+            "rating": "Error",
+            "availability": str(e),
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
 
 def scrape_flipkart(product):
     try:
