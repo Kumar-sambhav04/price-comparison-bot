@@ -19,16 +19,11 @@ amazon_products = [
 flipkart_products = [
     {
         "name": "iPhone 16",
-        "url": "https://www.flipkart.com/apple-iphone-16-
-        white-256-gb/p/itma0ed9b33a2973?pid=MOBH4DQFCU7ZY9HG&lid=LSTMOBH4DQFCU7ZY9HGLY6DQP&marketplace=FLIPKART&q=iphone%2016%20&sattr[]=color&sattr[]=
-storage&st=storage"
+        "url": "https://www.flipkart.com/apple-iphone-16-white-256-gb/p/itma0ed9b33a2973?pid=MOBH4DQFCU7ZY9HG&lid=LSTMOBH4DQFCU7ZY9HGLY6DQP&marketplace=FLIPKART&q=iphone%2016%20&sattr[]=color&sattr[]=storage&st=storage"
     },
     {
         "name": "iPhone 16 Pro",
-        "url": "https://www.flipkart.com/apple-iphone-16-pro-natural-titanium-128-gb
-        /p/itm4397c54ec56b7?pid=MOBH4DQFX4FR2HYZ&lid=LSTMOBH4DQFX4FR2HYZKVRW3N&marketplace=FLIPKART&q=iphone+16+
-pro&store=tyy%2F4io&srno=s_1_1&otracker=AS_Query_OrganicAutoSuggest_3_9_na_na_na&otracker1=AS_Query_OrganicAutoSuggest_3_9_na_na_na&fm=search-
-        autosuggest&iid=321f70d5-3781-4ad0-bbba-70bf9fb14dcf.MOBH4DQFX4FR2HYZ.SEARCH&ppt=sp&ppn=sp&ssid=ijf9jpd2bk0000001749620886044&qH=6f0b50cc832ce851"
+        "url": "https://www.flipkart.com/apple-iphone-16-pro-natural-titanium-128-gb/p/itm4397c54ec56b7?pid=MOBH4DQFX4FR2HYZ&lid=LSTMOBH4DQFX4FR2HYZKVRW3N&marketplace=FLIPKART&q=iphone+16+pro&store=tyy%2F4io&srno=s_1_1&otracker=AS_Query_OrganicAutoSuggest_3_9_na_na_na&otracker1=AS_Query_OrganicAutoSuggest_3_9_na_na_na&fm=search-autosuggest&iid=321f70d5-3781-4ad0-bbba-70bf9fb14dcf.MOBH4DQFX4FR2HYZ.SEARCH&ppt=sp&ppn=sp&ssid=ijf9jpd2bk0000001749620886044&qH=6f0b50cc832ce851"
     }
 ]
 
