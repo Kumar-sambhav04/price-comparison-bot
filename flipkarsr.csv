@@ -3,3 +3,5 @@ time,name,price,rating,availability
 2025-06-11 19:40:02,iPhone 16,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)"
 2025-06-12 16:57:59,iPhone 16 Pro,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)"
 2025-06-12 16:58:09,iPhone 16,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)"
+2025-06-13 10:28:56,iPhone 16 Pro,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)"
+2025-06-13 10:29:06,iPhone 16,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)"
