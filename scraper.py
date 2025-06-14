@@ -1,10 +1,12 @@
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
 import csv
 import os
+from datetime import datetime
+import undetected_chromedriver as uc
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# Product lists
+# --- Product Lists ---
 amazon_products = [
     {
         "name": "iPhone 16",
@@ -19,64 +21,53 @@ amazon_products = [
 flipkart_products = [
     {
         "name": "iPhone 16",
-        "url": "https://www.flipkart.com/apple-iphone-16-white-256-gb/p/itma0ed9b33a2973?pid=MOBH4DQFCU7ZY9HG&lid=LSTMOBH4DQFCU7ZY9HGLY6DQP&marketplace=FLIPKART&q=iphone%2016%20&sattr[]=color&sattr[]=storage&st=storage"
+        "url": "https://www.flipkart.com/apple-iphone-16-white-256-gb/p/itma0ed9b33a2973?pid=MOBH4DQFCU7ZY9HG"
     },
     {
         "name": "iPhone 16 Pro",
-        "url": "https://www.flipkart.com/apple-iphone-16-pro-natural-titanium-128-gb/p/itm4397c54ec56b7?pid=MOBH4DQFX4FR2HYZ&lid=LSTMOBH4DQFX4FR2HYZKVRW3N&marketplace=FLIPKART&q=iphone+16+pro&store=tyy%2F4io&srno=s_1_1&otracker=AS_Query_OrganicAutoSuggest_3_9_na_na_na&otracker1=AS_Query_OrganicAutoSuggest_3_9_na_na_na&fm=search-autosuggest&iid=321f70d5-3781-4ad0-bbba-70bf9fb14dcf.MOBH4DQFX4FR2HYZ.SEARCH&ppt=sp&ppn=sp&ssid=ijf9jpd2bk0000001749620886044&qH=6f0b50cc832ce851"
+        "url": "https://www.flipkart.com/apple-iphone-16-pro-natural-titanium-128-gb/p/itm4397c54ec56b7?pid=MOBH4DQFX4FR2HYZ"
     }
 ]
 
-# Headers to simulate browser
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-}
-
-# --- AMAZON (Placeholder) ---
-def scrape_amazon(product):
-    return {
-        "name": product["name"],
-        "price": "Coming Soon (API)",
-        "rating": "Coming Soon",
-        "availability": "Coming Soon",
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
-
-# --- FLIPKART Scraper ---
-def extract_availability(html_text):
-    html_text = html_text.lower()
-    if "out of stock" in html_text or "sold out" in html_text or "get notified" in html_text:
-        return "Unavailable"
-    else:
-        return "Available"
-
-
+# --- Flipkart Scraper using Selenium ---
 def scrape_flipkart(product):
     try:
-        r = requests.get(product["url"], headers=headers, timeout=10)
-        soup = BeautifulSoup(r.content, "html.parser")
-        html_text = soup.get_text().lower()
+        options = uc.ChromeOptions()
+        options.headless = True
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
-        # Block/page error check
-        title_tag = soup.find("span", {"class": "B_NuCI"})
-        if not title_tag:
+        driver = uc.Chrome(options=options)
+        driver.get(product["url"])
+        wait = WebDriverWait(driver, 10)
+
+        try:
+            wait.until(EC.presence_of_element_located((By.CLASS_NAME, "B_NuCI")))
+        except:
+            driver.quit()
             return {
                 "name": product["name"],
-                "price": "Blocked or Page Error",
+                "price": "Blocked or Timeout",
                 "rating": "N/A",
                 "availability": "N/A",
                 "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
 
-        price_tag = soup.select_one("div._30jeq3")
-        price = price_tag.text.strip() if price_tag else "N/A"
+        try:
+            price_element = driver.find_element(By.CLASS_NAME, "_30jeq3")
+            price = price_element.text.strip()
+        except:
+            price = "N/A"
 
-        availability = extract_availability(html_text)
+        page_text = driver.page_source.lower()
+        availability = "Unavailable" if any(x in page_text for x in ["out of stock", "sold out", "notify me"]) else "Available"
+
+        driver.quit()
 
         return {
             "name": product["name"],
             "price": price,
-            "rating": "N/A",  # Ratings not visible in HTML
+            "rating": "N/A",
             "availability": availability,
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
@@ -90,6 +81,16 @@ def scrape_flipkart(product):
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
+# --- Amazon API Placeholder ---
+def scrape_amazon(product):
+    return {
+        "name": product["name"],
+        "price": "Coming Soon (Amazon API)",
+        "rating": "Coming Soon",
+        "availability": "Coming Soon",
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
 # --- CSV Saving ---
 def save_to_csv(data, filename):
     file_exists = os.path.isfile(filename)
@@ -100,14 +101,14 @@ def save_to_csv(data, filename):
         for row in data:
             writer.writerow(row)
 
-# --- Main Function ---
+# --- Main Script ---
 if __name__ == "__main__":
     print("🔍 Scraping Flipkart...")
     flipkart_data = [scrape_flipkart(p) for p in flipkart_products]
     save_to_csv(flipkart_data, "flipkarsr.csv")
 
-    print("🔍 Scraping Amazon (placeholder)...")
+    print("🔍 Scraping Amazon (Placeholder)...")
     amazon_data = [scrape_amazon(p) for p in amazon_products]
     save_to_csv(amazon_data, "amazonsr.csv")
 
-    print("Data saved to CSVs")
+    print("Data saved to CSVs.")
