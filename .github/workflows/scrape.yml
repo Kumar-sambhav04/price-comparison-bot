@@ -2,8 +2,8 @@ name: Daily Price Scraper
 
 on:
   schedule:
-    - cron: '30 16 * * *'  # 10 PM IST (4:30 PM UTC)
-  workflow_dispatch:
+    - cron: '30 16 * * *'  # Runs at 10 PM IST (4:30 PM UTC) daily
+  workflow_dispatch:        # Allows manual trigger from GitHub UI
 
 jobs:
   run-scraper:
@@ -12,31 +12,20 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install system dependencies for Chrome
+      - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4 libappindicator1 libgtk-3-0
-
-      - name: Install Google Chrome
-        run: |
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt install -y ./google-chrome-stable_current_amd64.deb
-
-      - name: Install Python dependencies
-        run: |
-          pip install --upgrade pip
-          pip install requests beautifulsoup4 selenium undetected-chromedriver
+          pip install -r requirements.txt || pip install requests beautifulsoup4 python-dotenv
 
       - name: Run scraper
-        run: xvfb-run python scraper.py
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+        run: python scraper.py
 
       - name: Commit and push updates
         run: |
