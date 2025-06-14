@@ -50,11 +50,23 @@ def extract_availability(html_text):
     else:
         return "Available"
 
+
 def scrape_flipkart(product):
     try:
         r = requests.get(product["url"], headers=headers, timeout=10)
         soup = BeautifulSoup(r.content, "html.parser")
-        html_text = soup.get_text()
+        html_text = soup.get_text().lower()
+
+        # Block/page error check
+        title_tag = soup.find("span", {"class": "B_NuCI"})
+        if not title_tag:
+            return {
+                "name": product["name"],
+                "price": "Blocked or Page Error",
+                "rating": "N/A",
+                "availability": "N/A",
+                "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
 
         price_tag = soup.select_one("div._30jeq3")
         price = price_tag.text.strip() if price_tag else "N/A"
@@ -64,7 +76,7 @@ def scrape_flipkart(product):
         return {
             "name": product["name"],
             "price": price,
-            "rating": "N/A",  # Ratings aren't in static HTML
+            "rating": "N/A",  # Ratings not visible in HTML
             "availability": availability,
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
