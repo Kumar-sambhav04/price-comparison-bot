@@ -11,3 +11,5 @@ iPhone 16,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): R
 iPhone 16 Pro,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)",2025-06-14 12:35:45
 iPhone 16,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)",2025-06-14 13:00:45
 iPhone 16 Pro,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)",2025-06-14 13:00:55
+iPhone 16,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)",2025-06-14 13:02:05
+iPhone 16 Pro,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443): Read timed out. (read timeout=10)",2025-06-14 13:02:15
