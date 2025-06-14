@@ -42,7 +42,7 @@ def extract_availability(html_text):
 
 def scrape_flipkart(product):
     try:
-        scraperapi_url = f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={product['url']}"
+        scraperapi_url = f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={product['url']}&render=true"
         response = requests.get(scraperapi_url, timeout=20)
         soup = BeautifulSoup(response.content, "html.parser")
         html_text = soup.get_text().lower()
