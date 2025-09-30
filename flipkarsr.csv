@@ -229,3 +229,5 @@ iPhone 16 Pro,Error,Error,"HTTPSConnectionPool(host='www.flipkart.com', port=443
 2025-09-28 16:39:59,iPhone 16 Pro,Blocked or Timeout,N/A,N/A
 2025-09-29 16:38:03,iPhone 16,Error,Error,"HTTPConnectionPool(host='api.scraperapi.com', port=80): Read timed out. (read timeout=20)"
 2025-09-29 16:38:21,iPhone 16 Pro,Blocked or Timeout,N/A,N/A
+2025-09-30 16:45:30,iPhone 16,Error,Error,"HTTPConnectionPool(host='api.scraperapi.com', port=80): Read timed out. (read timeout=20)"
+2025-09-30 16:45:50,iPhone 16 Pro,Error,Error,"HTTPConnectionPool(host='api.scraperapi.com', port=80): Read timed out. (read timeout=20)"
